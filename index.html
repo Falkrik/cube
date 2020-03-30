@@ -94,8 +94,9 @@
 		var cube = new THREE.Mesh(geo, material);
 
 		// scene.add(cube);
-var light = new THREE.AmbientLight( 0xd0d0d0 ); // soft white light
-scene.add( light );
+			var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+			directionalLight.position.set( 0, -10, 100 );
+			scene.add( directionalLight );
 		// var manager = new THREE.LoadingManager();
 
 		var loader = new THREE.OBJLoader();
