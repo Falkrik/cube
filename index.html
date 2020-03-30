@@ -102,7 +102,6 @@
 		var loader = new THREE.OBJLoader();
 
 		var mtlLoader = new THREE.MTLLoader();
-		var childtest;
 
 		mtlLoader.load('models/test.mtl', function(materials) {
 			// materials.preload();
@@ -111,12 +110,13 @@
 
 			loader.load('models/test.obj', function(object) {
 
-				// var navmesh;
-				// object.traverse(function(node) {
-				// 	if(node.type === 'Mesh'){
-				// 		navmesh = node;
-				// 	}
-				// });
+				var navmesh;
+				object.traverse(function(node) {
+					if(node.type === 'Mesh'){
+						navmesh = node;
+					}
+				});
+				// console.log("TEST" + navmesh.type);
 
 				// var geometry = new THREE.Geometry();
 				// geometry.fromBufferGeometry(navmesh.geometry);
@@ -128,7 +128,9 @@
 				// window.model = navmesh;
 
 
-
+				// var test = THREE.
+				console.log(object.type);
+				// object = navmesh;
 
 				scene.add(object);
 				object.scale.set(10, 10, 10);
@@ -153,6 +155,7 @@
 		var xangle = 10;
 
 		var rotate = false;
+		var custom = true;
 
 		var tick = function(e) {
 			
@@ -169,6 +172,10 @@
 			} else {
 				model.rotation.y = document.getElementById("rotY").value/16;;
 				model.rotation.x = document.getElementById("rotX").value/16;;				
+			}
+
+			if(custom) {
+				console.log(model.isBufferGeometry);
 			}
 
 			// v+= 0.1;
@@ -188,11 +195,15 @@
 
 	</script>
 
-	<p>Rotation X:</p>
+	<p>RotationX (Up/Down):</p>
 	<input type="range" min="0" max="100" id="rotX">
 	<br><br>
-	<p>Rotation Y:</p>
+	<p>RotationY (Left/Right):</p>
 	<input type="range" min="0" max="100" id="rotY">
+
+	<br><br>
+	<p>CUSTOM:</p>
+	<input type="range" min="0" max="100" id="custom">
 <!-- 	<br><br>
 	<p>Rotation X:</p>
 	<input type="range" min="0" max="10" id="rotX"> -->
