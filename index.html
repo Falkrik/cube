@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>3D nice</title>
+	<script src="three.js"></script>
+	<script src="OBJLoader.js"></script>
+	<script src="MTLLoader.js"></script>
+	<style>
+		* { margin: 0px; }
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+		
+		var render = new THREE.WebGLRenderer();
+		render.setSize(400, 400);
+		render.setClearColor( 0xffffff, 1);
+
+		document.body.appendChild(render.domElement);
+
+		var camera = new THREE.PerspectiveCamera(65, 1, 1, 500);
+		camera.position.set(0, 0, 50);
+		camera.lookAt(0, 0, 0);
+
+		var scene = new THREE.Scene();
+
+		var points = [];
+
+		points.push(new THREE.Vector3(-10, -10, 0));
+		points.push(new THREE.Vector3(-10, 10, 0));
+		points.push(new THREE.Vector3(10, 10, 0));
+		points.push(new THREE.Vector3(10, -10, 0));
+		points.push(new THREE.Vector3(-10, -10, 0));
+
+		points.push(new THREE.Vector3(-10, -10, 20));
+		points.push(new THREE.Vector3(10, -10, 20));
+		points.push(new THREE.Vector3(10, -10, 0));
+		points.push(new THREE.Vector3(-10, -10, 0));
+
+		points.push(new THREE.Vector3(-10, -10, 20));
+		points.push(new THREE.Vector3(-10, 10, 20));
+		points.push(new THREE.Vector3(-10, 10, 0));
+		points.push(new THREE.Vector3(-10, -10, 0));
+
+		points.push(new THREE.Vector3(10, -10, 0));
+		points.push(new THREE.Vector3(10, 10, 0));
+		points.push(new THREE.Vector3(10, 10, 20));
+		points.push(new THREE.Vector3(10, -10, 20));
+		points.push(new THREE.Vector3(10, -10, 0));
+
+		points.push(new THREE.Vector3(10, 10, 0));
+		points.push(new THREE.Vector3(10, 10, 20));
+		points.push(new THREE.Vector3(-10, 10, 20));
+		points.push(new THREE.Vector3(-10, 10, 0));
+		points.push(new THREE.Vector3(10, 10, 0));
+
+		points.push(new THREE.Vector3(10, 10, 20));
+		points.push(new THREE.Vector3(-10, 10, 20));
+		points.push(new THREE.Vector3(-10, -10, 20));
+		points.push(new THREE.Vector3(10, -10, 20));
+		points.push(new THREE.Vector3(10, 10, 20));
+
+
+		//old
+
+		// points.push(new THREE.Vector3(-10, -10, 20));
+		// points.push(new THREE.Vector3(-10, 10, 20));
+		// points.push(new THREE.Vector3(10, 10, 20));
+		// points.push(new THREE.Vector3(10, -10, 20));
+		// points.push(new THREE.Vector3(-10, -10, 20));
+
+		// points.push(new THREE.Vector3(10, -10, 20));
+		// points.push(new THREE.Vector3(10, -10, 0));
+
+		// points.push(new THREE.Vector3(-10, -10, 0));
+		// points.push(new THREE.Vector3(-10, 10, 0));
+		// points.push(new THREE.Vector3(-10, 10, 20));
+
+		// points.push(new THREE.Vector3(10, 10, 20));
+		// points.push(new THREE.Vector3(10, 10, 0));
+
+
+		// points.push(new THREE.Vector3(10, -12, 0));
+
+
+		var geo = new THREE.BufferGeometry().setFromPoints(points);
+		var material = new THREE.LineBasicMaterial({color:0xffffff});
+		var line = new THREE.Line(geo, material);
+
+		// scene.add(line);
+
+		var geo = new THREE.BoxGeometry(10, 10, 10)/*.setFromPoints(points)*/;
+		var material = new THREE.MeshBasicMaterial({color:0xffffff});
+		var cube = new THREE.Mesh(geo, material);
+
+		// scene.add(cube);
+var light = new THREE.AmbientLight( 0xd0d0d0 ); // soft white light
+scene.add( light );
+		// var manager = new THREE.LoadingManager();
+
+		var loader = new THREE.OBJLoader();
+
+		var mtlLoader = new THREE.MTLLoader();
+		var childtest;
+
+		mtlLoader.load('models/test.mtl', function(materials) {
+			// materials.preload();
+
+			loader.setMaterials(materials);
+
+			loader.load('models/test.obj', function(object) {
+
+				// var navmesh;
+				// object.traverse(function(node) {
+				// 	if(node.type === 'Mesh'){
+				// 		navmesh = node;
+				// 	}
+				// });
+
+				// var geometry = new THREE.Geometry();
+				// geometry.fromBufferGeometry(navmesh.geometry);
+
+
+
+				// scene.add(navmesh);
+				// navmesh.scale.set(10, 10, 10);
+				// window.model = navmesh;
+
+
+
+
+				scene.add(object);
+				object.scale.set(10, 10, 10);
+				window.model = object;
+				render.render(scene, camera);
+
+
+				// var t = object.content;
+				// console.log(t);
+				// childtest = new THREE.Geometry().fromBufferGeometry(model.geometry);
+				// object.geometry = new THREE.Geometry().fromBufferGeometry( object.geometry );
+				// model.attributes.position.setX(0, 0);
+				// console.log(model.vertices);
+				// console.log(childtest);
+
+			});
+		});
+
+
+		var v = 0;
+		var yangle = 10;
+		var xangle = 10;
+
+		var rotate = false;
+
+		var tick = function(e) {
+			
+			// line.position.x = 20*Math.sin(v);
+			// line.scale = 0.2;
+
+			// line.position.x = 0;
+			cube.scale = 10;
+			if(rotate) {
+				line.rotation.y = yangle;
+				line.rotation.x = xangle;
+				yangle += document.getElementById("rotY").value/ 200;
+				xangle += document.getElementById("rotX").value/200;
+			} else {
+				model.rotation.y = document.getElementById("rotY").value/16;;
+				model.rotation.x = document.getElementById("rotX").value/16;;				
+			}
+
+			// v+= 0.1;
+
+			//2020-03-30:
+			// var vertex = model.geometry.attributes.position.array;
+			// console.log(vertex);
+
+
+
+			render.render(scene, camera);
+		}
+
+		setInterval(tick, 50);
+
+		
+
+	</script>
+
+	<p>Rotation X:</p>
+	<input type="range" min="0" max="100" id="rotX">
+	<br><br>
+	<p>Rotation Y:</p>
+	<input type="range" min="0" max="100" id="rotY">
+<!-- 	<br><br>
+	<p>Rotation X:</p>
+	<input type="range" min="0" max="10" id="rotX"> -->
+</body>
+</html>
